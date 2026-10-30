@@ -1,0 +1,2 @@
+aws_region = "eu-north-1"
+admin_cidr = "102.88.114.133/32"
