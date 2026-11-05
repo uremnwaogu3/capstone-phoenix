@@ -33,7 +33,7 @@ variable "worker_count" {
 
   validation {
     condition     = var.worker_count >= 2
-    error_message = "The brief requires 3+ nodes, so worker_count must be at least 2."
+    error_message = "3+ nodes required , so worker_count must be at least 2."
   }
 }
 
