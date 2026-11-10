@@ -1,0 +1,10 @@
+# Managed by Ansible - do not edit by hand
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin no
+PubkeyAuthentication yes
+MaxAuthTries {{ hardening_ssh_max_auth_tries }}
+LoginGraceTime {{ hardening_ssh_login_grace_time }}
+X11Forwarding no
+# Needed for the kubectl tunnel: ssh -L 6443:127.0.0.1:6443
+AllowTcpForwarding yes

@@ -1,0 +1,11 @@
+---
+hardening_packages:
+  - curl
+  - ca-certificates
+  - unattended-upgrades
+
+hardening_upgrade_packages: false
+
+hardening_ssh_max_auth_tries: 4
+
+hardening_ssh_login_grace_time: 30
