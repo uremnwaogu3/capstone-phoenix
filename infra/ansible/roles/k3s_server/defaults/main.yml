@@ -1,0 +1,7 @@
+---
+k3s_install_script_url: https://get.k3s.io
+k3s_install_script_path: /usr/local/bin/k3s-install.sh
+k3s_binary_path: /usr/local/bin/k3s
+k3s_secrets_encryption: true
+k3s_ready_retries: 24
+k3s_ready_delay: 5

@@ -1,0 +1,60 @@
+---
+- name: Create the k3s config directory
+  ansible.builtin.file:
+    path: /etc/rancher/k3s
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Write the k3s server config
+  ansible.builtin.template:
+    src: config.yaml.j2
+    dest: /etc/rancher/k3s/config.yaml
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Restart k3s
+
+- name: Download the k3s install script
+  ansible.builtin.get_url:
+    url: "{{ k3s_install_script_url }}"
+    dest: "{{ k3s_install_script_path }}"
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Install k3s server
+  ansible.builtin.command: "{{ k3s_install_script_path }}"
+  args:
+    creates: "{{ k3s_binary_path }}" #This is the indempotent check to avoid re-installing k3s if it"s already installed
+  environment:
+    INSTALL_K3S_VERSION: "{{ k3s_version }}" 
+
+- name: Make sure the k3s service is enabled and running
+  ansible.builtin.systemd:
+    name: k3s 
+    enabled: true
+    state: started
+
+- name: Wait for the control-plane node to be Ready
+  ansible.builtin.command: >
+    {{ k3s_binary_path }} kubectl wait
+    --for=condition=Ready node/{{ inventory_hostname }} --timeout=10s
+  register: k3s_node_ready
+  until: k3s_node_ready.rc == 0
+  retries: "{{ k3s_ready_retries }}"
+  delay: "{{ k3s_ready_delay }}"
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: Show the node list
+  ansible.builtin.command: "{{ k3s_binary_path }} kubectl get nodes -o wide"
+  register: k3s_nodes
+  changed_when: false
+  when: not ansible_check_mode
+
+- name: Print the node list
+  ansible.builtin.debug:
+    var: k3s_nodes.stdout_lines
+  when: not ansible_check_mode

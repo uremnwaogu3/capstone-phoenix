@@ -52,5 +52,3 @@
     validate: /usr/sbin/sshd -t -f %s
   notify: Reload ssh
 
-
-
