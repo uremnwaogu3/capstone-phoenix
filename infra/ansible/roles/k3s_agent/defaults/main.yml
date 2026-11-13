@@ -1,0 +1,8 @@
+---
+k3s_install_script_url: https://get.k3s.io
+k3s_install_script_path: /usr/local/bin/k3s-install.sh
+k3s_agent_uninstall_script: /usr/local/bin/k3s-agent-uninstall.sh
+k3s_token_file: /var/lib/rancher/k3s/server/node-token
+k3s_server_port: 6443
+k3s_ready_retries: 24
+k3s_ready_delay: 5

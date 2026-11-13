@@ -1,0 +1,4 @@
+# Managed by Ansible - do not edit by hand
+server: https://{{ hostvars[groups['k3s_server'][0]].private_ip }}:{{ k3s_server_port }}
+token: "{{ k3s_node_token.content | b64decode | trim }}"
+node-ip: {{ private_ip }}
